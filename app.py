@@ -1,6 +1,10 @@
 from flask import Flask, url_for, redirect
 app = Flask(__name__)
 
+@app.errorhandler(404)
+def not_found(err):
+    return "нет такой страницы", 404
+
 # функция start() срабатывает и на «/», и на «/web».
 # @app.route("/")
 @app.route("/web")
