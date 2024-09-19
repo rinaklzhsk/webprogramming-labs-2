@@ -263,3 +263,26 @@ def error_418():
     </body>
 </html>
 ''', 418
+
+# Маршрут, который вызывает ошибку на сервере
+@app.route('/cause_error')
+def cause_error():
+    # Намеренная ошибка: деление на ноль
+    return 1 / 0  # Это вызовет ошибку 500
+
+# Перехватчик для ошибки 500 (Internal Server Error)
+@app.errorhandler(500)
+def internal_server_error(e):
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>Ошибка сервера - 500</title>
+    </head> 
+    <body>
+        <h1>500 - Внутренняя ошибка сервера</h1>
+        <p>На сервере произошла ошибка.</p>
+        <a href="/">На главную</a>
+    </body>
+</html>
+''', 500
