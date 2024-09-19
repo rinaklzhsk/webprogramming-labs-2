@@ -5,7 +5,7 @@ app = Flask(__name__)
 def not_found(err):
     return "нет такой страницы", 404
 # функция start() срабатывает и на «/», и на «/web».
-# @app.route("/")
+
 @app.route("/lab1/web")
 def web():
     # возвращает html-страницу
@@ -46,7 +46,7 @@ def oak():
 <!doctype html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="''' + url_for("static", filename="lab1.css") + '''">
+        <link rel="stylesheet" href="''' + url_for("static", filename="lab1.css") + '''">
     </head>
     <body>
         <h1>Дуб</h1>
@@ -88,3 +88,46 @@ def reset_counter():
 @app.route("/lab1/info")
 def info():
     return redirect("/lab1/author")
+
+# Главная страница с адресами '/' и '/index'
+@app.route('/')
+@app.route('/index')
+def index():
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <title>НГТУ, ФБ, Лабораторные работы</title>
+    </head>
+    <body>
+        <!-- Заголовок -->
+        <header>
+            <h1>НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных</h1>
+        </header>
+        
+        <ul>
+            <li><a href="''' + url_for('lab1') + '''">Первая лабораторная</a></li>
+        </ul>
+        
+        
+        <footer style = "bottom: 0; position: fixed">
+            <p>ФИО: Калужская Ирина Витальевна</p>
+            <p>Группа: Группа ФБИ-21</p>
+            <p>Курс: 3</p>
+            <p>Год: 2024</p>
+        </footer>
+    </body>
+</html>
+'''
+
+# Маршрут для первой лабораторной
+@app.route('/lab1')
+def lab1():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>Это первая лабораторная работа</h1>
+    </body>
+</html>
+'''
