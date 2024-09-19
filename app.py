@@ -4,7 +4,6 @@ app = Flask(__name__)
 @app.errorhandler(404)
 def not_found(err):
     return "нет такой страницы", 404
-
 # функция start() срабатывает и на «/», и на «/web».
 # @app.route("/")
 @app.route("/web")
@@ -15,7 +14,12 @@ def web():
            <body>
                <h1>web-сервер на flask</h1>
            </body>
-        </html>"""
+        </html>""",200,{
+            # возвращается заголовок X-Server
+            'X-Server': 'sample', 
+            'Content-Type': 'text/plain; charset=utf-8'
+        } 
+
 
 @app.route("/author")
 def author():
