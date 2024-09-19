@@ -56,7 +56,7 @@ def counter():
         Сколько раз вы сюда заходили: ''' + str(count) + '''
     </body>
 </html>
-'''
+''',  201
 
 @app.route("/info")
 def info():
