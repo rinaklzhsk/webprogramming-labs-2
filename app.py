@@ -3,8 +3,54 @@ app = Flask(__name__)
 
 @app.errorhandler(404)
 def not_found(err):
-    return "нет такой страницы", 404
-# функция start() срабатывает и на «/», и на «/web».
+    return """<!doctype html>
+        <html>
+            <head>
+                <title>Страница не найдена - 404</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        text-align: center;
+                        background-color: #ffe4e1; 
+                        margin: 0;
+                        padding: 0;
+                    }
+                    h1 {
+                        font-size: 48px;
+                        margin-top: 50px;
+                        color: #ff69b4;  
+                    }
+                    p {
+                        font-size: 18px;
+                        color: #c71585;  
+                    }
+                    img {
+                        width: 300px;
+                        height: auto;
+                        margin-top: 20px;
+                    }
+                    a {
+                        display: inline-block;
+                        margin-top: 30px;
+                        padding: 10px 20px;
+                        background-color: #ff1493;
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 5px;
+                    }
+                    a:hover {
+                        background-color: #db7093;
+                    }
+                </style>
+            </head> 
+            <body>
+                <h1>404 - Страница не найдена</h1>
+                <p>Кажется, что-то пошло не так. Эта страница не существует.</p>
+                <img src='""" + url_for('static', filename='404.jpg') + """'>
+                <p>Возможно, вы ошиблись в адресе. Попробуйте вернуться на главную.</p>
+                <a href="/">На главную</a>
+            </body>
+        </html>""", 404
 
 @app.route("/lab1/web")
 def web():
@@ -100,7 +146,6 @@ def index():
         <title>НГТУ, ФБ, Лабораторные работы</title>
     </head>
     <body>
-        <!-- Заголовок -->
         <header>
             <h1>НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных</h1>
         </header>
@@ -140,3 +185,81 @@ def lab1():
     </body>
 </html>
 '''
+
+# Маршрут для кода 400 (Bad Request)
+@app.route('/error400')
+def error_400():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>400 - Bad Request</h1>
+        <p>Сервер не может обработать ваш запрос.</p>
+    </body>
+</html>
+''', 400
+
+# Маршрут для кода 401 (Unauthorized)
+@app.route('/error401')
+def error_401():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>401 - Unauthorized</h1>
+        <p>Доступ запрещен. Требуется авторизация.</p>
+    </body>
+</html>
+''', 401
+
+# Маршрут для кода 402 (Payment Required)
+@app.route('/error402')
+def error_402():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>402 - Payment Required</h1>
+        <p>Требуется оплата для доступа к ресурсу.</p>
+    </body>
+</html>
+''', 402
+
+# Маршрут для кода 403 (Forbidden)
+@app.route('/error403')
+def error_403():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>403 - Forbidden</h1>
+        <p>Доступ к ресурсу запрещен.</p>
+    </body>
+</html>
+''', 403
+
+# Маршрут для кода 405 (Method Not Allowed)
+@app.route('/error405')
+def error_405():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>405 - Method Not Allowed</h1>
+        <p>Запрошенный метод не разрешен для этого ресурса.</p>
+    </body>
+</html>
+''', 405
+
+# Маршрут для кода 418 (I'm a teapot)
+@app.route('/error418')
+def error_418():
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>418 - I'm a teapot</h1>
+        <p>Я — чайник, и я не могу заварить кофе.</p>
+    </body>
+</html>
+''', 418
