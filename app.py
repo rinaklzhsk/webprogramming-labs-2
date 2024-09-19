@@ -17,6 +17,7 @@ def web():
         </html>""",200,{
             # возвращается заголовок X-Server
             'X-Server': 'sample', 
+            # выводит тест
             'Content-Type': 'text/plain; charset=utf-8'
         } 
 
@@ -44,6 +45,9 @@ def oak():
     return '''
 <!doctype html>
 <html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="''' + url_for("static", filename="lab1.css") + '''">
+    </head>
     <body>
         <h1>Дуб</h1>
         <img src="''' + path + '''">
