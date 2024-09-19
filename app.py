@@ -70,6 +70,22 @@ def counter():
 </html>
 ''',  201
 
+# Роут для сброса счетчика
+@app.route('/lab1/reset_counter')
+def reset_counter():
+    global count
+    count = 0
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <p>Счётчик был успешно очищен.</p>
+        <!-- Ссылка обратно на страницу с счетчиком -->
+        <a href="/lab1/counter">Вернуться к счётчику</a>
+    </body>
+</html>
+''', 200
+
 @app.route("/info")
 def info():
     return redirect("/author")
