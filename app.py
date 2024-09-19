@@ -6,7 +6,7 @@ def not_found(err):
     return "нет такой страницы", 404
 # функция start() срабатывает и на «/», и на «/web».
 # @app.route("/")
-@app.route("/web")
+@app.route("/lab1/web")
 def web():
     # возвращает html-страницу
     return """<!doctype html>
@@ -22,7 +22,7 @@ def web():
         } 
 
 
-@app.route("/author")
+@app.route("/lab1/author")
 def author():
     name = "Калужская Ирина Витальевна"
     group = "ФБИ-21"
@@ -80,12 +80,11 @@ def reset_counter():
 <html>
     <body>
         <p>Счётчик был успешно очищен.</p>
-        <!-- Ссылка обратно на страницу с счетчиком -->
         <a href="/lab1/counter">Вернуться к счётчику</a>
     </body>
 </html>
 ''', 200
 
-@app.route("/info")
+@app.route("/lab1/info")
 def info():
-    return redirect("/author")
+    return redirect("/lab1/author")
