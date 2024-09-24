@@ -182,6 +182,58 @@ def lab1():
             веб-приложений, сознательно предоставляющих лишь самые базовые возможности.
         </p>
         <p><a href="/">На главную</a></p>
+        <h2>Список роутов</h2>
+        <li>
+            <a href="/lab1/web">Веб</a>
+        </li>
+        <li>
+            <a href="/lab1/author">Автор</a>
+        </li>
+        <li>
+            <a href="/lab1/oak">Дуб</a>
+        </li>
+        <li>
+            <a href="/lab1/counter">Счетчик</a>
+        </li>
+        <li>
+            <a href="/lab1/reset_counter">Ресет счетчика</a>
+        </li>
+        <li>
+            <a href="/lab1/info">Инфо</a>
+        </li>
+        <li>
+            <a href="/">Главная страница 1</a>
+        </li>
+        <li>
+            <a href="/index">Главная страница 2</a>
+        </li>
+        <li>
+            <a href="/lab1">Первая лабораторная</a>
+        </li>
+        <li>
+            <a href="/error400">Ошибка 400</a>
+        </li>
+        <li>
+            <a href="/error401">Ошибка 401</a>
+        </li>
+        <li>
+            <a href="/error402">Ошибка 402</a>
+        </li>
+        <li>
+            <a href="/error403">Ошибка 403</a>
+        </li>
+        <li>
+            <a href="/error405">Ошибка 405</a>
+        </li>
+        <li>
+            <a href="/error418">Ошибка 418</a>
+        </li>
+        <li>
+            <a href="/cause_error">Вызов ошибки</a>
+        </li>
+        <li>
+            <a href="/berserk">Берсерк</a>
+        </li>
     </body>
 </html>
 '''
