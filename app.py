@@ -324,7 +324,7 @@ def cause_error():
 
 # Перехватчик для ошибки 500 (Internal Server Error)
 @app.errorhandler(500)
-def internal_server_error(e):
+def internal_server_error(err):
     return '''
 <!doctype html>
 <html>
