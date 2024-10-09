@@ -12,7 +12,7 @@
             <h3>{{ cat.name }}</h3>
             <p>{{ cat.description }}</p>
             <img src="{{ url_for('static', filename=cat.image) }}" alt="{{ cat.name }}" 
-            style="width: 100%; height: auto; border-radius: 10px;">
+            style="width: 70%; height: auto; border-radius: 10px;">
         </div>
         {% endfor %}
     </div>

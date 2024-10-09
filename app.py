@@ -136,6 +136,7 @@ def info():
     return redirect("/lab1/author")
 
 # Главная страница с адресами '/' и '/index'
+# корень сайта
 @app.route('/')
 @app.route('/index')
 def index():
@@ -152,6 +153,7 @@ def index():
         
         <ul>
             <li><a href="''' + url_for('lab1') + '''">Первая лабораторная</a></li>
+            <li><a href="''' + url_for('lab2') + '''">Вторая лабораторная</a></li>
         </ul>
         
         <footer style = "bottom: 0; position: fixed">
