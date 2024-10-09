@@ -403,11 +403,14 @@ def add_flower(name):
 </html>
 '''
 
+# Создаем маршрут для example
 @app.route('/lab2/example')
 def example():
+    # определяем переменные
     name = 'Калужская Ирина'
     group = 'ФБИ-21'
     labnum = '2'
-    course = '3'
+    course = '3 курс'
+    # передаем переменные для отображения в HTML
     return render_template('example.html', name=name, group=group, 
                             labnum=labnum, course=course)
