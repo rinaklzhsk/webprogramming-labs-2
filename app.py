@@ -501,3 +501,35 @@ def filters():
     phrase = "О <b>сколько</b> <u>нам</u> <i>открытий</i> чудных..."
     return render_template('filter.html', phrase=phrase)
     
+# Основной маршрут для математических операций с двумя числами
+@app.route('/lab2/calc/<int:a>/<int:b>')
+def calc(a, b):
+    addition = a + b
+    subtraction = a - b
+    multiplication = a * b
+    division = a / b if b != 0 else "не делится на 0"
+    power = a ** b
+
+    return f'''
+<!doctype html>
+<html>
+    <body>
+        <h1>Расчёт с параметрами:</h1>
+        <p>{a} + {b} = {addition}</p>
+        <p>{a} - {b} = {subtraction}</p>
+        <p>{a} * {b} = {multiplication}</p>
+        <p>{a} / {b} = {division}</p>
+        <p>{a}<sup>{b}</sup> = {power}</p>
+    </body>
+</html>
+'''
+
+# Маршрут, который перенаправляет с /lab2/calc/ на /lab2/calc/1/1
+@app.route('/lab2/calc/')
+def calc_default():
+    return redirect(url_for('calc', a=1, b=1))
+
+# Маршрут, который перенаправляет с /lab2/calc/<int:a> на /lab2/calc/a/1
+@app.route('/lab2/calc/<int:a>')
+def calc_with_one(a):
+    return redirect(url_for('calc', a=a, b=1))
