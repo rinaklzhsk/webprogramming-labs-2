@@ -525,3 +525,20 @@ def calc_default():
 @app.route('/lab2/calc/<int:a>')
 def calc_with_one(a):
     return redirect(url_for('calc', a=a, b=1))
+
+books = [
+    {"author": "Лев Толстой", "title": "Война и мир", "genre": "Роман", "pages": 1225},
+    {"author": "Федор Достоевский", "title": "Преступление и наказание", "genre": "Роман", "pages": 671},
+    {"author": "Александр Пушкин", "title": "Евгений Онегин", "genre": "Поэма", "pages": 224},
+    {"author": "Антон Чехов", "title": "Вишневый сад", "genre": "Пьеса", "pages": 96},
+    {"author": "Николай Гоголь", "title": "Мертвые души", "genre": "Поэма", "pages": 352},
+    {"author": "Иван Тургенев", "title": "Отцы и дети", "genre": "Роман", "pages": 432},
+    {"author": "Михаил Булгаков", "title": "Мастер и Маргарита", "genre": "Фантастический роман", "pages": 470},
+    {"author": "Виктор Пелевин", "title": "Чапаев и Пустота", "genre": "Фантастика", "pages": 320},
+    {"author": "Борис Акунин", "title": "Азазель", "genre": "Детектив", "pages": 288},
+    {"author": "Аркадий и Борис Стругацкие", "title": "Пикник на обочине", "genre": "Фантастика", "pages": 224}
+]
+@app.route('/lab2/books')
+# Список книг
+def show_books():
+    return render_template('books.html', books=books)
