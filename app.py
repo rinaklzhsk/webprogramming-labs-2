@@ -526,6 +526,7 @@ def calc_default():
 def calc_with_one(a):
     return redirect(url_for('calc', a=a, b=1))
 
+# Список книг
 books = [
     {"author": "Лев Толстой", "title": "Война и мир", "genre": "Роман", "pages": 1225},
     {"author": "Федор Достоевский", "title": "Преступление и наказание", "genre": "Роман", "pages": 671},
@@ -539,6 +540,16 @@ books = [
     {"author": "Аркадий и Борис Стругацкие", "title": "Пикник на обочине", "genre": "Фантастика", "pages": 224}
 ]
 @app.route('/lab2/books')
-# Список книг
 def show_books():
     return render_template('books.html', books=books)
+
+cats = [
+    {"name": "Сиамская кошка", "description": "Известны своим стройным телом и ярко-голубыми глазами.", "image": "siamese.webp"},
+    {"name": "Мейн-кун", "description": "Очень крупная порода кошек с густой шерстью и большими лапами.", "image": "mainecoon.webp"},
+    {"name": "Бенгальская кошка", "description": "Активная кошка с пятнистым окрасом, похожая на дикого леопарда.", "image": "bengal.jpg"},
+    {"name": "Британская короткошёрстная", "description": "Известна своим спокойным характером и плюшевой шерстью.", "image": "british.jpg"},
+    {"name": "Моя кошка", "description": "Отличается игривостью, милостью и прожорливостью.", "image": "mycat.jpg"}
+]
+@app.route('/lab2/cats')
+def show_cats():
+    return render_template('cats.html',cats=cats)
