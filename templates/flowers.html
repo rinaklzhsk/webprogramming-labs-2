@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{# номер лабораторной работы: #}
+{% block lab %}Лабораторная работа 2{% endblock %}
+
+{# основной контент: #}
+{% block main %}
+    <h1>Список цветов</h1>
+    <ul>
+        {% for f in flower_list %}
+            <li>{{ loop.index }} - {{ f.name }}: {{ f.price }} &#8381;</li>
+            {% endfor %}
+    </ul>
+    <a href="{{ url_for('clear_flowers') }}">Удалить все цветы</a><br>
+
+    <h3>Добавить новый цветок:</h3>
+    <form action="{{ url_for('add_flower') }}" method="post">
+        Название: <input type="text" name="name" required>
+        Цена: <input type="number" name="price" required>
+        <input type="submit" value="добавить">
+    </form>
+{% endblock %}
