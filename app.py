@@ -381,24 +381,94 @@ def a2():
 
 flower_list = ['роза','тюльпан','незабудка','ромашка']
 
+# @app.route('/lab2/flowers/<int:flower_id>')
+# def flowers(flower_id):
+#     if flower_id >= len(flower_list):
+#         return 'такого цветка нет', 404
+#     else:
+#         return "цветок: " + flower_list[flower_id]
+    
+# Улучшенный роут для вывода информации о цветке по ID
 @app.route('/lab2/flowers/<int:flower_id>')
-def flowers(flower_id):
-    if flower_id >= len(flower_list):
-        return 'такого цветка нет', 404
-    else:
-        return "цветок: " + flower_list[flower_id]
+def get_flower_by_id(flower_id):
+    if flower_id >= len(flower_list) or flower_id < 0:
+        return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>Ошибка</h1>
+        <p>Такого цветка нет.</p>
+        <a href="/lab2/flowers">Посмотреть все цветы</a>
+    </body>
+</html>
+''', 404
 
-@app.route('/lab2/add_flower/<name>')
-def add_flower(name):
-    flower_list.append(name)
     return f'''
 <!doctype html>
 <html>
     <body>
-    <h1>Добавлен новый цветок</h1>
-    <p>Название нового цветка: {name} </p>
-    <p>Всего цветов: {len(flower_list)}</p>
-    <p>Полный список: {flower_list}</p>
+        <h1>Цветок: {flower_list[flower_id]}</h1>
+        <a href="/lab2/flowers">Посмотреть все цветы</a>
+    </body>
+</html>
+'''
+
+# Обработчик для добавления цветка
+@app.route('/lab2/add_flower/')
+@app.route('/lab2/add_flower/<name>')
+def add_flower(name=None):
+    if not name:  # Проверка на отсутствие имени
+        return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>Ошибка</h1>
+        <p>Вы не задали имя цветка.</p>
+        <a href="/lab2/flowers">Посмотреть все цветы</a>
+    </body>
+</html>
+''', 400  # Возвращаем HTML с ошибкой 400
+
+    flower_list.append(name)  # Добавляем цветок в список
+    return f'''
+<!doctype html>
+<html>
+    <body>
+        <h1>Добавлен новый цветок</h1>
+        <p>Название нового цветка: {name}</p>
+        <p>Всего цветов: {len(flower_list)}</p>
+        <a href="/lab2/flowers">Посмотреть все цветы</a>
+    </body>
+</html>
+'''
+
+# Роут для вывода всех цветов и их количества
+@app.route('/lab2/flowers')
+def show_flowers():
+    return f'''
+<!doctype html>
+<html>
+    <body>
+        <h1>Список всех цветов</h1>
+        <p>Всего цветов: {len(flower_list)}</p>
+        <ul>
+            {''.join(f'<li>{flower}</li>' for flower in flower_list)}
+        </ul>
+        <a href="/lab2/clear_flowers">Очистить список цветов</a>
+    </body>
+</html>
+'''
+
+# Роут для очистки списка цветов
+@app.route('/lab2/clear_flowers')
+def clear_flowers():
+    flower_list.clear()  # Очищаем список цветов
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>Список цветов очищен</h1>
+        <a href="/lab2/flowers">Посмотреть все цветы</a>
     </body>
 </html>
 '''
