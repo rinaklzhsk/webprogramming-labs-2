@@ -504,25 +504,17 @@ def filters():
 # Основной маршрут для математических операций с двумя числами
 @app.route('/lab2/calc/<int:a>/<int:b>')
 def calc(a, b):
+    a=a
+    b=b
     addition = a + b
     subtraction = a - b
     multiplication = a * b
     division = a / b if b != 0 else "не делится на 0"
     power = a ** b
-
-    return f'''
-<!doctype html>
-<html>
-    <body>
-        <h1>Расчёт с параметрами:</h1>
-        <p>{a} + {b} = {addition}</p>
-        <p>{a} - {b} = {subtraction}</p>
-        <p>{a} * {b} = {multiplication}</p>
-        <p>{a} / {b} = {division}</p>
-        <p>{a}<sup>{b}</sup> = {power}</p>
-    </body>
-</html>
-'''
+    return render_template('calculate.html', addition=addition, 
+                           subtraction=subtraction, 
+                           multiplication=multiplication, 
+                           division=division, power=power, a=a, b=b)
 
 # Маршрут, который перенаправляет с /lab2/calc/ на /lab2/calc/1/1
 @app.route('/lab2/calc/')
