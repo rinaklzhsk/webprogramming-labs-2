@@ -8,7 +8,10 @@
     <h1>Список цветов</h1>
     <ul>
         {% for f in flower_list %}
-            <li>{{ loop.index }} - {{ f.name }}: {{ f.price }} &#8381;</li>
+            <li>
+                {{ loop.index }} - {{ f.name }}: {{ f.price }} &#8381; 
+                <a href="/lab2/del_flower/{{loop.index0}}">Удалить цветок</a>
+            </li>
             {% endfor %}
     </ul>
     <a href="{{ url_for('clear_flowers') }}">Удалить все цветы</a><br>
