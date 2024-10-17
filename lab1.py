@@ -1,6 +1,82 @@
 from flask import Blueprint, url_for, redirect
 lab1 = Blueprint('lab1',__name__)
 
+
+# Маршрут для первой лабораторной
+@lab1.route('/lab1/')
+def lab():
+    return '''
+    <!doctype html>
+    <html>
+        <head>
+            <title>Лабораторная 1</title>
+        </head>
+        <body>
+            <h1>Лабораторная 1</h1>
+            <p>
+                Flask — фреймворк для создания веб-приложений на языке программирования Python, 
+                использующий набор инструментов Werkzeug, а также шаблонизатор Jinja2. 
+                Относится к категории так называемых микрофреймворков — минималистичных каркасов 
+                веб-приложений, сознательно предоставляющих лишь самые базовые возможности.
+            </p>
+            <p><a href="/">На главную</a></p>
+            <h2>Список роутов</h2>
+            <li>
+                <a href="/lab1/web">Веб</a>
+            </li>
+            <li>
+                <a href="/lab1/author">Автор</a>
+            </li>
+            <li>
+                <a href="/lab1/oak">Дуб</a>
+            </li>
+            <li>
+                <a href="/lab1/counter">Счетчик</a>
+            </li>
+            <li>
+                <a href="/lab1/reset_counter">Ресет счетчика</a>
+            </li>
+            <li>
+                <a href="/lab1/info">Инфо</a>
+            </li>
+            <li>
+                <a href="/">Главная страница 1</a>
+            </li>
+            <li>
+                <a href="/index">Главная страница 2</a>
+            </li>
+            <li>
+                <a href="/lab1">Первая лабораторная</a>
+            </li>
+            <li>
+                <a href="/error400">Ошибка 400</a>
+            </li>
+            <li>
+                <a href="/error401">Ошибка 401</a>
+            </li>
+            <li>
+                <a href="/error402">Ошибка 402</a>
+            </li>
+            <li>
+                <a href="/error403">Ошибка 403</a>
+            </li>
+            <li>
+                <a href="/error405">Ошибка 405</a>
+            </li>
+            <li>
+                <a href="/error418">Ошибка 418</a>
+            </li>
+            <li>
+                <a href="/cause_error">Вызов ошибки</a>
+            </li>
+            <li>
+                <a href="/lab1/berserk">Берсерк</a>
+            </li>
+        </body>
+    </html>
+    '''
+
+
 @lab1.route("/lab1/web")
 def web():
     # возвращает html-страницу
@@ -39,17 +115,17 @@ def author():
 def oak():
     path = url_for("static", filename="oak.jpg")
     return '''
-<!doctype html>
-<html>
-    <head>
-        <link rel="stylesheet" href="''' + url_for("static", filename="lab1.css") + '''">
-    </head>
-    <body>
-        <h1>Дуб</h1>
-        <img src="''' + path + '''">
-    </body>
-</html>
-'''
+    <!doctype html>
+    <html>
+        <head>
+            <link rel="stylesheet" href="''' + url_for("static", filename="lab1.css") + '''">
+        </head>
+        <body>
+            <h1>Дуб</h1>
+            <img src="''' + path + '''">
+        </body>
+    </html>
+    '''
 
 
 count = 0
@@ -60,13 +136,13 @@ def counter():
     global count
     count += 1
     return '''
-<!doctype html>
-<html>
-    <body>
-        Сколько раз вы сюда заходили: ''' + str(count) + '''
-    </body>
-</html>
-''',  201
+    <!doctype html>
+    <html>
+        <body>
+            Сколько раз вы сюда заходили: ''' + str(count) + '''
+        </body>
+    </html>
+    ''',  201
 
 
 # Роут для сброса счетчика
@@ -75,94 +151,19 @@ def reset_counter():
     global count
     count = 0
     return '''
-<!doctype html>
-<html>
-    <body>
-        <p>Счётчик был успешно очищен.</p>
-        <a href="/lab1/counter">Вернуться к счётчику</a>
-    </body>
-</html>
-''', 200
+    <!doctype html>
+    <html>
+        <body>
+            <p>Счётчик был успешно очищен.</p>
+            <a href="/lab1/counter">Вернуться к счётчику</a>
+        </body>
+    </html>
+    ''', 200
 
 
 @lab1.route("/lab1/info")
 def info():
     return redirect("/lab1/author")
-
-
-# Маршрут для первой лабораторной
-@lab1.route('/lab1')
-def lab():
-    return '''
-<!doctype html>
-<html>
-    <head>
-        <title>Лабораторная 1</title>
-    </head>
-    <body>
-        <h1>Лабораторная 1</h1>
-        <p>
-            Flask — фреймворк для создания веб-приложений на языке программирования Python, 
-            использующий набор инструментов Werkzeug, а также шаблонизатор Jinja2. 
-            Относится к категории так называемых микрофреймворков — минималистичных каркасов 
-            веб-приложений, сознательно предоставляющих лишь самые базовые возможности.
-        </p>
-        <p><a href="/">На главную</a></p>
-        <h2>Список роутов</h2>
-        <li>
-            <a href="/lab1/web">Веб</a>
-        </li>
-        <li>
-            <a href="/lab1/author">Автор</a>
-        </li>
-        <li>
-            <a href="/lab1/oak">Дуб</a>
-        </li>
-        <li>
-            <a href="/lab1/counter">Счетчик</a>
-        </li>
-        <li>
-            <a href="/lab1/reset_counter">Ресет счетчика</a>
-        </li>
-        <li>
-            <a href="/lab1/info">Инфо</a>
-        </li>
-        <li>
-            <a href="/">Главная страница 1</a>
-        </li>
-        <li>
-            <a href="/index">Главная страница 2</a>
-        </li>
-        <li>
-            <a href="/lab1">Первая лабораторная</a>
-        </li>
-        <li>
-            <a href="/error400">Ошибка 400</a>
-        </li>
-        <li>
-            <a href="/error401">Ошибка 401</a>
-        </li>
-        <li>
-            <a href="/error402">Ошибка 402</a>
-        </li>
-        <li>
-            <a href="/error403">Ошибка 403</a>
-        </li>
-        <li>
-            <a href="/error405">Ошибка 405</a>
-        </li>
-        <li>
-            <a href="/error418">Ошибка 418</a>
-        </li>
-        <li>
-            <a href="/cause_error">Вызов ошибки</a>
-        </li>
-        <li>
-            <a href="/lab1/berserk">Берсерк</a>
-        </li>
-    </body>
-</html>
-'''
 
 
 # Маршрут с текстом и изображением, а также с заголовками Content-Language и нестандартными заголовками
