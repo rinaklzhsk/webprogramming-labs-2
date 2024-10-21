@@ -113,7 +113,7 @@ def author():
 # выдавает страницу с картинкой дуба
 @lab1.route('/lab1/oak')
 def oak():
-    path = url_for("static", filename="oak.jpg")
+    path = url_for("static", filename="lab1/oak.jpg")
     return '''
     <!doctype html>
     <html>
@@ -190,7 +190,7 @@ def berserk():
             Гатс выжил в массакре и начал мстить своему бывшему другу, отправляясь в опасное путешествие по миру, 
             населенному демонами и другими опасными существами. Он путешествует в поисках силы и возможности отомстить Гриффиту.
             </p>
-            <img src="''' + url_for('static', filename='berserk.png') + '''">
+            <img src="''' + url_for('static', filename='lab1/berserk.png') + '''">
         </body>
     </html>''', { 
     "Content-Language": "ru", 

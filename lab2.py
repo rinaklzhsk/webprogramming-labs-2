@@ -23,7 +23,7 @@ flower_list = [
 # Маршрут для отображения списка цветов
 @lab2.route('/lab2/flowers')
 def show_flowers():
-    return render_template('flowers.html', flower_list=flower_list)
+    return render_template('/lab2/flowers.html', flower_list=flower_list)
 
 
 # Обработчик для удаления всех цветов
@@ -72,19 +72,19 @@ def example():
         {'name': 'манго', 'price': 321}
     ]
     # передаем переменные для отображения в HTML
-    return render_template('example.html', name=name, group=group, 
+    return render_template('/lab2/example.html', name=name, group=group, 
                             labnum=labnum, course=course, fruits=fruits)
 
 
 @lab2.route('/lab2/')
 def labtwo():
-    return render_template('lab2.html')
+    return render_template('/lab2/lab2.html')
 
 
 @lab2.route('/lab2/filters')
 def filters():
     phrase = "О <b>сколько</b> <u>нам</u> <i>открытий</i> чудных..."
-    return render_template('filter.html', phrase=phrase)
+    return render_template('/lab2/filter.html', phrase=phrase)
     
 
 # Основной маршрут для математических операций с двумя числами
@@ -97,7 +97,7 @@ def calc(a, b):
     multiplication = a * b
     division = a / b if b != 0 else "не делится на 0"
     power = a ** b
-    return render_template('calculate.html', addition=addition, 
+    return render_template('/lab2/calculate.html', addition=addition, 
                            subtraction=subtraction, 
                            multiplication=multiplication, 
                            division=division, power=power, a=a, b=b)
@@ -132,18 +132,18 @@ books = [
 
 @lab2.route('/lab2/books')
 def show_books():
-    return render_template('books.html', books=books)
+    return render_template('/lab2/books.html', books=books)
 
 
 cats = [
-    {"name": "Сиамская кошка", "description": "Известны своим стройным телом и ярко-голубыми глазами.", "image": "siamese.webp"},
-    {"name": "Мейн-кун", "description": "Очень крупная порода кошек с густой шерстью и большими лапами.", "image": "mainecoon.webp"},
-    {"name": "Бенгальская кошка", "description": "Активная кошка с пятнистым окрасом, похожая на дикого леопарда.", "image": "bengal.jpg"},
-    {"name": "Британская короткошёрстная", "description": "Известна своим спокойным характером и плюшевой шерстью.", "image": "british.jpg"},
-    {"name": "Моя кошка", "description": "Отличается игривостью, милостью и прожорливостью.", "image": "mycat.jpg"}
+    {"name": "Сиамская кошка", "description": "Известны своим стройным телом и ярко-голубыми глазами.", "image": "/lab2/siamese.webp"},
+    {"name": "Мейн-кун", "description": "Очень крупная порода кошек с густой шерстью и большими лапами.", "image": "/lab2/mainecoon.webp"},
+    {"name": "Бенгальская кошка", "description": "Активная кошка с пятнистым окрасом, похожая на дикого леопарда.", "image": "/lab2/bengal.jpg"},
+    {"name": "Британская короткошёрстная", "description": "Известна своим спокойным характером и плюшевой шерстью.", "image": "/lab2/british.jpg"},
+    {"name": "Моя кошка", "description": "Отличается игривостью, милостью и прожорливостью.", "image": "/lab2/mycat.jpg"}
 ]
 
 
 @lab2.route('/lab2/cats')
 def show_cats():
-    return render_template('cats.html',cats=cats)
+    return render_template('/lab2/cats.html',cats=cats)
