@@ -147,3 +147,44 @@ def del_settings():
     resp.set_cookie('font_size')
     resp.set_cookie('font_style')
     return resp
+
+
+books = [
+    {"title": "Война и мир", "price": 450, "author": "Лев Толстой", "genre": "Роман"},
+    {"title": "Преступление и наказание", "price": 380, "author": "Федор Достоевский", "genre": "Роман"},
+    {"title": "Мастер и Маргарита", "price": 550, "author": "Михаил Булгаков", "genre": "Роман"},
+    {"title": "1984", "price": 300, "author": "Джордж Оруэлл", "genre": "Антиутопия"},
+    {"title": "Оно", "price": 600, "author": "Стивен Кинг", "genre": "Хоррор"},
+    {"title": "Гарри Поттер и философский камень", "price": 400, "author": "Дж.К. Роулинг", "genre": "Фэнтези"},
+    {"title": "Алиса в стране чудес", "price": 250, "author": "Льюис Кэрролл", "genre": "Фэнтези"},
+    {"title": "Гордость и предубеждение", "price": 350, "author": "Джейн Остин", "genre": "Роман"},
+    {"title": "Улисс", "price": 700, "author": "Джеймс Джойс", "genre": "Роман"},
+    {"title": "Бойцовский клуб", "price": 320, "author": "Чак Паланик", "genre": "Роман"},
+    {"title": "Путь к дому", "price": 480, "author": "Елена Королева", "genre": "Психология"},
+    {"title": "Маленький принц", "price": 200, "author": "Антуан де Сент-Экзюпери", "genre": "Сказка"},
+    {"title": "Граф Монте-Кристо", "price": 650, "author": "Александр Дюма", "genre": "Приключения"},
+    {"title": "О дивный новый мир", "price": 290, "author": "Олдос Хаксли", "genre": "Антиутопия"},
+    {"title": "Фауст", "price": 500, "author": "Гете", "genre": "Драма"},
+    {"title": "Три товарища", "price": 370, "author": "Эрих Мария Ремарк", "genre": "Роман"},
+    {"title": "Шантарам", "price": 450, "author": "Грегори Дэвид Робертс", "genre": "Приключения"},
+    {"title": "Путь мирного воина", "price": 300, "author": "Дэн Миллман", "genre": "Философия"},
+    {"title": "Алхимик", "price": 280, "author": "Пауло Коэльо", "genre": "Философия"},
+    {"title": "Сумерки", "price": 330, "author": "Стефани Майер", "genre": "Фэнтези"}
+]
+
+# Главная страница с формой и результатами поиска
+@lab3.route('/lab3/books', methods=['GET', 'POST'])
+def books_view():
+    if request.method == 'POST':
+        try:
+            min_price = float(request.form.get('min_price', 0))
+            max_price = float(request.form.get('max_price', float('inf')))
+        except ValueError:
+            min_price = 0
+            max_price = float('inf')
+
+        # Фильтруем книги, цена которых в указанном диапазоне
+        filtered_books = [book for book in books if min_price <= book["price"] <= max_price]
+        return render_template('lab3/books.html', books=filtered_books, min_price=min_price, max_price=max_price)
+    
+    return render_template('lab3/books.html', books=None)
