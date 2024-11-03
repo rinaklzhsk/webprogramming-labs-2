@@ -105,3 +105,36 @@ def settings():
     resp = make_response(render_template('lab3/settings.html', color=color, bg_color=bg_color, 
                         font_size=font_size, font_style=font_style))
     return resp
+    
+
+@lab3.route('/lab3/ticket')
+def ticket():
+    ticket = 0
+    FIO = request.args.get('FIO')
+    age = request.args.get('age', 0)
+    shelf = request.args.get('shelf')
+    linen = request.args.get('linen')
+    baggage = request.args.get('baggage')
+    placefrom = request.args.get('placefrom')
+    placeto = request.args.get('placeto')
+    date = request.args.get('date')
+    belay = request.args.get('belay')
+
+    if int(age) < 18:
+        ticket += 700
+        ticket_type = "Детский билет"
+    else:
+        ticket += 1000
+        ticket_type = "Взрослый билет"
+    if shelf == 'lower' or shelf == 'lower-side':
+        ticket += 100
+    if linen == 'withlinen':
+        ticket += 75
+    if baggage == 'withbaggage':
+        ticket += 250
+    if belay == 'withbelay':
+        ticket += 150
+    return render_template('lab3/ticket.html', FIO=FIO, age=age, 
+                ticket=ticket, shelf=shelf, linen=linen, 
+                baggage=baggage, belay=belay, ticket_type=ticket_type, 
+                placefrom=placefrom, placeto=placeto, date=date)
