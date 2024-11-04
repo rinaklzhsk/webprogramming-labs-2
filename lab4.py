@@ -127,36 +127,44 @@ def tree():
 
 
 users = [
-    {'login': 'alex', 'password': '123'},
-    {'login': 'bob', 'password': '555'},
-    {'login': 'rina', 'password': '1912'},
-    {'login': 'anjela', 'password': '1401'}
+    {'name': 'Alexander Hamilton','login': 'alex', 'password': '123', 'sex': 'мужской'},
+    {'name': 'Bob Ross','login': 'bob', 'password': '555','sex': 'мужской'},
+    {'name': 'Irina Kaluzhskaya','login': 'rina', 'password': '1912', 'sex': 'женский'},
+    {'name': 'Mayya Matsekh','login': 'may', 'password': '0206', 'sex': 'женский'}
 ]
 
 @lab4.route('/lab4/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        if 'login' in session:
+        if 'name' in session:
             authorized = True
-            login = session['login']
+            name = session['name']
         else:
-            authorized = False
-            login = '' 
-        return render_template('lab4/login.html', authorized=authorized, login=login)
-
+            authorized=False
+            name = ''
+        return render_template('lab4/login.html', authorized=authorized, name=name)
+    name = request.form.get('name')
     login = request.form.get('login')
     password = request.form.get('password')
-
-    for user in users: 
-        if login == user['login'] and password == user['password']:
-            session['login'] = login
+    sex = request.form.get('sex')
+    for user in users:
+        if login == user['login'] and password == user['password'] and name == user['name'] and sex == user['sex']:
+            session['name'] = name
             return redirect('/lab4/login')
-
-    error = 'Неверные логин и/или пароль'
-    return render_template('lab4/login.html', error=error, authorized=False)
+    error = 'Некорректные данные'
+    if name == '':
+        error = 'Не указано имя пользователя'
+    elif login == '':
+        error = 'Не указан логин'
+    elif password == '':
+        error = 'Не указан пароль'
+    return render_template('lab4/login.html', error=error, authorized=False, 
+                            login=login, password=password, name=name, sex=sex)
 
 
 @lab4.route('/lab4/logout', methods = ['POST'])
 def logout():
-    session.pop('login', None)
-    return redirect ('/lab4/login')
+    session.pop('name', None)
+    return redirect('/lab4/login')
+
+

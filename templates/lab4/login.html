@@ -4,10 +4,12 @@
 
 {% block main %}
     {% if authorized %}
-        <h1>Добро пожаловать</h1>
+        <h1>Добро пожаловать, {{ name }}!</h1>
         <div>
             <form action="/lab4/logout" method="post">
-                <button>Выход</button>
+                <div>
+                    <button class="userinfo entrance">Выход</button>
+                </div>
             </form>
         </div>
     {% else %}
@@ -15,14 +17,25 @@
         <h2>Пожалуйста, авторизуйтесь</h2>
         <form method="post">
             <div>
+                <label for="name">Имя пользователя:</label>
+                <input type="text" id="name" name="name" value="{{ name or '' }}">
+            </div>
+            <div>
+                <label for="sex">Пол:</label>
+                <select name="sex">
+                    <option {% if sex == 'мужской' %}selected{% endif %}>мужской</option>
+                    <option {% if sex == 'женский' %}selected{% endif %}>женский</option>
+                </select>
+            </div>
+            <div>
                 <label for="login">Пользователь:</label>
-                <input type="text" name="login" id="login">
+                <input type="text" name="login" id="login" value="{{ login or '' }}">
             </div>
             <div>
                 <label for="password">Пароль</label>
-                <input type="password" id="password" name="password">
+                <input type="password" id="password" name="password" value="{{ password or '' }}">
             </div>
-            <div>{{ error }}</div>
+            <div class="error">{{ error }}</div>
             <div>
                 <button type="submit">Войти</button>
                 <button type="reset">Отмена</button>

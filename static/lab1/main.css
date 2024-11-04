@@ -29,3 +29,8 @@ footer {
     left: 0;
     right: 0;
 }
+
+div.error {
+    color: #ff0051;
+    font-weight: bold;
+}
