@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block lab %}Деление чисел{% endblock %}
+
+{% block main %}
+    {% if error %}
+        {{ error }}
+    {% else %}
+        {% if error0 %}
+            {{ error0 }}
+        {% else %}
+            <h1>Деление чисел</h1>
+            {{ x1 }} / {{ x2 }} = {{ result }}
+        {% endif %}
+    {% endif %}
+{% endblock %}
