@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block lab %}Заказ зерна{% endblock %}
+
+{% block main %}
+    <style>
+        .order-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+        }
+
+        .order-box {
+            background-color: #fefae0; 
+            border: 1px solid #c5e1a5; 
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            color: #558b2f;
+            margin-top: 0;
+        }
+
+        form {
+            margin-bottom: 15px;
+        }
+
+        label {
+            color: #33691e;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #aed581;
+            border-radius: 5px;
+            margin-top: 5px;
+            background-color: #f1f8e9; 
+        }
+
+        button {
+            background-color: #c5e1a5;
+            color: #33691e;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #aed581; 
+        }
+
+        .message, .discount-info {
+            color: #33691e;
+            font-size: 1.1em;
+        }
+    </style>
+    </style>
+
+    <div class="order-container">
+        <div class="order-box">
+            <h2>Заказ зерна</h2>
+
+            <form method="POST" action="/lab4/order_grain">
+                <label for="grain_type">Выберите тип зерна:</label>
+                <select name="grain_type" id="grain_type" required>
+                    <option value="ячмень">Ячмень</option>
+                    <option value="овёс">Овёс</option>
+                    <option value="пшеница">Пшеница</option>
+                    <option value="рожь">Рожь</option>
+                </select>
+                <br><br>
+                <label for="weight">Введите вес (в тоннах):</label>
+                <input type="number" name="weight" id="weight" step="0.1" required>
+                <br><br>
+                <button type="submit">Оформить заказ</button>
+            </form>
+
+            {% if message %}
+                <p>{{ message }}</p>
+                {% if discount_info %}
+                    <p>{{ discount_info }}</p>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
