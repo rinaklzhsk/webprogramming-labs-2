@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block lab %}Холодильник{% endblock %}
+
+{% block main %}
+<style>
+    .fridge-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 70vh;
+        background-color: #f0f0f0;
+        padding-top: 20px;
+    }
+
+    .fridge-box {
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 400px;
+        width: 100%;
+    }
+
+    h2 {
+        margin-top: 0;
+    }
+
+    form {
+        margin-bottom: 15px;
+    }
+
+    button {
+        margin-top: 10px;
+    }
+</style>
+
+<div class="fridge-container">
+    <div class="fridge-box">
+        <h2>Холодильник</h2>
+
+        <form method="POST" action="/lab4/fridge">
+            <label for="temperature">Введите температуру:</label>
+            <input type="number" name="temperature" id="temperature" step="0.1">
+            <button type="submit">Установить</button>
+        </form>
+
+        {% if message %}
+            <p>{{ message }}</p>
+            {% for _ in range(snowflakes) %}
+                <span style="font-size: 35px;">❄️</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

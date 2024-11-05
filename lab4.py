@@ -168,3 +168,36 @@ def logout():
     return redirect('/lab4/login')
 
 
+@lab4.route('/lab4/fridge', methods=['GET', 'POST'])
+def fridge():
+    message = ""
+    snowflakes = 0
+
+    if request.method == 'POST':
+        # значение температуры из формы
+        try:
+            temperature = float(request.form.get('temperature'))
+        except (ValueError, TypeError):
+            temperature = None
+
+        if temperature is None:
+            message = "ошибка: не задана температура"
+        elif temperature < -12:
+            message = "не удалось установить температуру — слишком низкое значение"
+        elif temperature > -1:
+            message = "не удалось установить температуру — слишком высокое значение"
+        elif -12 <= temperature <= -9:
+            message = f"Установлена температура: {temperature}°С"
+            snowflakes = 3
+        elif -8 <= temperature <= -5:
+            message = f"Установлена температура: {temperature}°С"
+            snowflakes = 2
+        elif -4 <= temperature <= -1:
+            message = f"Установлена температура: {temperature}°С"
+            snowflakes = 1
+
+    return render_template('lab4/fridge.html', message=message, snowflakes=snowflakes)
+
+
+
+
