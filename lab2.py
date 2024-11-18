@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, redirect, render_template
+from flask import Blueprint, url_for, redirect, render_template, request
 lab2 = Blueprint('lab2',__name__)
 
 
@@ -52,7 +52,7 @@ def add_flower():
     price = request.form['price']
     # Добавляем новый цветок в список, проверяем наличие имени и цены
     if name and price.isdigit():
-        flower_list.lab2end({'name': name, 'price': int(price)})
+        flower_list.append({'name': name, 'price': int(price)})
     return redirect(url_for('lab2.show_flowers'))
 
 
