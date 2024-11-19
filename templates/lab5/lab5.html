@@ -22,7 +22,11 @@
         <div class="list"><a href="/lab5/register">Регистрация</a></div>
         <div class="list"><a href="/lab5/divst">Список статей</a></div>
         <div class="list"><a href="/lab5/create">Создать статью</a></div>
-        <div style="color: aliceblue;">Анонимус</div>
+        {% if login %}
+            <div style="color: aliceblue;">{{ login }}</div>
+        {% else %}
+            <div style="color: aliceblue;">Anonymous</div>
+        {% endif %}
     </div>
     
 
