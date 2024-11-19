@@ -15,7 +15,8 @@ def db_connect():
         host = '127.0.0.1',
         database = 'irina_kaluzhskaya_knowledge_base',
         user = 'irina_kaluzhskaya_knowledge_base',
-        password = '123'
+        password = '123',
+        options='-c client_encoding=UTF8'
     )
     cur = conn.cursor(cursor_factory = RealDictCursor)
     return conn, cur
@@ -54,6 +55,9 @@ def register():
 
 @lab5.route('/lab5/login', methods = ['GET', 'POST'])
 def login():
+    if 'login' in session:
+        return render_template('lab5/success_login.html', login=session['login'])
+
     if request.method == 'GET':
         return render_template('lab5/login.html')
 
@@ -63,22 +67,49 @@ def login():
     if not login or not password:
         return render_template('lab5/login.html', error='Заполните все поля')
 
-    db_connect()
+    conn, cur = db_connect()
 
-    cur.execute(f"SELECT * FROM users WHERE login='{login}';")
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("SELECT * FROM users WHERE login=%s;", (login, ))
+    else:
+        cur.execute("SELECT * FROM users WHERE login=?;", (login, ))
     user = cur.fetchone()
 
     if not user:
         db_close(conn, cur)
-        return render_template('lab5/login.html', 
-                                error='Логин и/или пароль неверны')
-
-    # читаем из БД запись, относящуюся к выбранному пользователю.
+        return render_template('lab5/login.html', error='Логин и/или пароль неверны')
+    
     if not check_password_hash(user['password'], password):
         db_close(conn, cur)
-        return render_template('lab5/login.html', 
-                                error='Логин и/или пароль неверны')
-
+        return render_template('lab5/login.html', error='Логин и/или пароль неверны')
+    
     session['login'] = login
     db_close(conn, cur)
     return render_template('lab5/success_login.html', login=login)
+
+
+@lab5.route('/lab5/create', methods = ['GET', 'POST'])
+def create():
+    login=session.get('login')
+    if not login:
+        return redirect('/lab5/login')
+
+    if request.method == 'GET':
+        return render_template('lab5/create_article.html')
+
+    title = request.form.get('title')
+    article_text = request.form.get('article_text')
+
+    if not title or not article_text:
+        return render_template('lab5/create_article.html', error='Заполните все поля')
+
+    conn, cur = db_connect()
+
+    cur.execute("SELECT * FROM users WHERE login=%s;", (login, ))
+    user_id = cur.fetchone()["id"]
+
+    cur.execute(f"INSERT INTO articles(user_id, title, article_text)\
+            VALUES ({user_id}, '{title}', '{article_text}');")
+
+    db_close(conn, cur)
+    return redirect('/lab5')
