@@ -2,22 +2,26 @@ from flask import Blueprint, render_template, request, session
 
 lab6 = Blueprint('lab6', __name__)
 
-
-@lab6.route('/lab6/')
-def main():
-    return render_template('lab6/lab6.html')
-
-
+# Данные офисов
 offices = []
 for i in range(1, 11):
-    offices.append({"number": i, "tenant": "", "price": 900 + i%3*100})
+    offices.append({"number": i, "tenant": "", "price": 900 + i % 3 * 100})
 
+# Главная страница
+@lab6.route('/lab6/')
+def main():
+    # Передаём login пользователя в шаблон
+    login = session.get('login', '')
+    return render_template('lab6/lab6.html', login=login)
 
-@lab6.route('/lab6/json-rpc-api/', methods = ['POST'])
+# JSON-RPC API
+@lab6.route('/lab6/json-rpc-api/', methods=['POST'])
 def api():
     data = request.json
     id = data['id']
+
     if data['method'] == 'info':
+        # Отправляем список офисов
         return {
             'jsonrpc': '2.0',
             'result': offices,
@@ -35,12 +39,20 @@ def api():
             'id': id
         }
 
-    # бронирование
+    if data['method'] == 'user_total_cost':
+        # Считаем общую стоимость бронирования для текущего пользователя
+        total_cost = sum(office['price'] for office in offices if office['tenant'] == login)
+        return {
+            'jsonrpc': '2.0',
+            'result': total_cost,
+            'id': id
+        }
+
     if data['method'] == 'booking':
         office_number = data['params']
         for office in offices:
             if office['number'] == office_number:
-                if office['tenant'] !='':
+                if office['tenant']:
                     return {
                         'jsonrpc': '2.0',
                         'error': {
@@ -50,20 +62,18 @@ def api():
                         'id': id
                     }
 
-
                 office['tenant'] = login
                 return {
                     'jsonrpc': '2.0',
                     'result': 'success',
                     'id': id
                 }
-    
-    # отмена бронирования
+
     if data['method'] == 'cancellation':
         office_number = data['params']
         for office in offices:
             if office['number'] == office_number:
-                if office['tenant'] == '':
+                if not office['tenant']:
                     return {
                         'jsonrpc': '2.0',
                         'error': {
@@ -72,8 +82,7 @@ def api():
                         },
                         'id': id
                     }
-                
-                if office['tenant'] != login:  # Проверка на соответствие текущего пользователя
+                if office['tenant'] != login:
                     return {
                         'jsonrpc': '2.0',
                         'error': {
@@ -82,13 +91,13 @@ def api():
                         },
                         'id': id
                     }
-
-                office['tenant'] = '' # Удаляем бронирование
+                office['tenant'] = ''
                 return {
                     'jsonrpc': '2.0',
                     'result': 'success',
                     'id': id
                 }
+
     return {
         'jsonrpc': '2.0',
         'error': {
