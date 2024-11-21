@@ -48,7 +48,10 @@ def api():
     try:
         # Получение списка офисов с сортировкой по номеру
         if method == 'info':
-            cur.execute("SELECT * FROM offices ORDER BY number ASC;")  # Сортировка по номеру офиса
+            if current_app.config['DB_TYPE'] == 'postgres':
+                cur.execute("SELECT * FROM offices ORDER BY number ASC;")  # Сортировка по номеру офиса
+            else:
+                cur.execute("SELECT * FROM offices ORDER BY number ASC;")
             offices = cur.fetchall()
             return {
                 'jsonrpc': '2.0',
@@ -70,7 +73,10 @@ def api():
 
         # Расчет общей стоимости бронирования
         if method == 'user_total_cost':
-            cur.execute("SELECT SUM(price) AS total FROM offices WHERE tenant = %s;", (login,))
+            if current_app.config['DB_TYPE'] == 'postgres':
+                cur.execute("SELECT SUM(price) AS total FROM offices WHERE tenant = %s;", (login,))
+            else:
+                cur.execute("SELECT SUM(price) AS total FROM offices WHERE tenant = ?;", (login,))
             result = cur.fetchone()
             total_cost = result["total"] if result["total"] else 0
             return {
@@ -82,7 +88,10 @@ def api():
         # Бронирование офиса
         if method == 'booking':
             office_number = data['params']
-            cur.execute("SELECT * FROM offices WHERE number = %s;", (office_number,))
+            if current_app.config['DB_TYPE'] == 'postgres':
+                cur.execute("SELECT * FROM offices WHERE number = %s;", (office_number,))
+            else:
+                cur.execute("SELECT * FROM offices WHERE number = ?;", (office_number,))
             office = cur.fetchone()
 
             if not office:
@@ -98,7 +107,10 @@ def api():
                     'id': id
                 }
 
-            cur.execute("UPDATE offices SET tenant = %s WHERE number = %s;", (login, office_number))
+            if current_app.config['DB_TYPE'] == 'postgres':
+                cur.execute("UPDATE offices SET tenant = %s WHERE number = %s;", (login, office_number))
+            else:
+                cur.execute("UPDATE offices SET tenant = ? WHERE number = ?;", (login, office_number))
             conn.commit()
             return {
                 'jsonrpc': '2.0',
@@ -109,7 +121,10 @@ def api():
         # Отмена бронирования офиса
         if method == 'cancellation':
             office_number = data['params']
-            cur.execute("SELECT * FROM offices WHERE number = %s;", (office_number,))
+            if current_app.config['DB_TYPE'] == 'postgres':
+                cur.execute("SELECT * FROM offices WHERE number = %s;", (office_number,))
+            else:
+                cur.execute("SELECT * FROM offices WHERE number = ?;", (office_number,))
             office = cur.fetchone()
 
             if not office:
@@ -125,7 +140,10 @@ def api():
                     'id': id
                 }
 
-            cur.execute("UPDATE offices SET tenant = NULL WHERE number = %s;", (office_number,))
+            if current_app.config['DB_TYPE'] == 'postgres':
+                cur.execute("UPDATE offices SET tenant = NULL WHERE number = %s;", (office_number,))
+            else:
+                cur.execute("UPDATE offices SET tenant = NULL WHERE number = ?;", (office_number,))
             conn.commit()
             return {
                 'jsonrpc': '2.0',
