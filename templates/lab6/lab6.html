@@ -9,41 +9,94 @@
         const json = {
             'jsonrpc': '2.0',
             'method': 'info',
-            // id - случайное число от 0 до 1000:
-            'id': Math.round(Math.random()*1000)
+            'id': Math.round(Math.random() * 1000)
         };
 
         fetch(url, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(json) // преобразовать json в строку
         })
-
         .then(function(response) {
-            return response.json() // ответ в формате json
+            return response.json(); // ответ в формате json
         })
-
         .then(function(data) {
             const office_list = data.result;
             const ul = document.getElementById('office-list');
-            for(let i = 0; i < office_list.length; i++) {
+            ul.innerHTML = ''; // Очищаем список перед обновлением
+
+            for (let i = 0; i < office_list.length; i++) {
                 const office = office_list[i];
                 const li = document.createElement('li');
                 li.innerText = `${office.number}: ${office.tenant || 'свободен'}`;
-                
-                // бронирование
+
+                // Кнопка бронирования
                 const bookingButton = document.createElement('button');
                 bookingButton.innerText = 'Зарезервировать';
-                bookingButton.onclick = function() {booking(office.number)};
+                bookingButton.onclick = function() { booking(office.number) };
                 li.appendChild(bookingButton);
-                
+
+                // Кнопка отмены бронирования
+                if (office.tenant) { // Проверяем, если офис забронирован
+                    const cancellationButton = document.createElement('button');
+                    cancellationButton.innerText = 'Освободить';
+                    cancellationButton.onclick = function() { cancellation(office.number) }; // Здесь вызов cancellation
+                    li.appendChild(cancellationButton);
+                }
+
                 ul.appendChild(li);
             }
-        })
+        });
     }
 
+function cancellation(officeNumber) {  // Убедитесь, что эта функция доступна
+    const url = '/lab6/json-rpc-api';
+    const json = {
+        'jsonrpc': '2.0',
+        'method': 'cancellation',
+        'params': officeNumber,
+        'id': Math.round(Math.random() * 1000)
+    };
+
+    fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(json)
+    })
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        if (data.error) {
+            switch (data.error.code) {
+                case 3:
+                    alert('Бронирование не найдено');
+                    break;
+                case 1:
+                    alert('Вы не авторизованы, пожалуйста, авторизуйтесь');
+                    break;
+                case 4:
+                    alert('Вы не можете отменить чужое бронирование!')
+                    break;
+                default:
+                    alert('Странная ошибка');
+                    break;
+            }
+        } 
+        else {
+            document.getElementById('office-list').innerHTML = '';
+            getOfficeList(); // Перезагружаем список офисов
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    getOfficeList();
+});
+
+
     function booking(officeNumber) {
-        const url = '/lab6/json-rpc-apc';
+        const url = '/lab6/json-rpc-api';
         const json = {
             'jsonrpc': '2.0',
             'method': 'booking',
