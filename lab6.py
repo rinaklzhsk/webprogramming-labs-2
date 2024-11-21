@@ -10,7 +10,7 @@ def main():
 
 offices = []
 for i in range(1, 11):
-    offices.append({"number": i, "tenant": ""})
+    offices.append({"number": i, "tenant": "", "price": 900 + i%3*100})
 
 
 @lab6.route('/lab6/json-rpc-api/', methods = ['POST'])
