@@ -76,18 +76,23 @@ def get_film(id):
 
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['DELETE'])
 def del_film(id):
-    if 0 <= id < len(films):
-        del films[id]
-    else:
-        return '', 204
+    if id < 0 or id >= len(films):
+        return {"error": "Film not found"}, 404
+    del films[id]
+    return '', 204
 
 
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['PUT'])
 def put_film(id):
-    if 0 <= id < len(films):
-        film = request.get_json()
-        films[id] = film
-        return films[id]
-    else:
-        return redirect('app/not_found')
+    if id < 0 or id >= len(films):
+        return {"error": "Film not found"}, 404
+    film = request.get_json()
+    films[id] = film
+    return films[id]
 
+@lab7.route('/lab7/rest-api/films/', methods=['POST'])
+def add_film():
+    film = request.get_json()
+    films.append(film)
+    id = {'id': len(films) - 1}
+    return id
