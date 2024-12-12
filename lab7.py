@@ -89,6 +89,8 @@ def put_film(id):
     film = request.get_json()
     if film['description'] == '':
         return {'description': 'Заполните описание'}, 400
+    if film["title"] == "" and film["title_ru"]:
+            film["title"] = film["title_ru"]
     films[id] = film
     return films[id]
 
@@ -97,6 +99,8 @@ def add_film():
     film = request.get_json()
     if film['description'] == '':
         return {'description': 'Заполните описание'}, 400
+    if film["title"] == "" and film["title_ru"]:
+        film["title"] = film["title_ru"]
     films.append(film)
     id = {'id': len(films) - 1}
     return id

@@ -9,34 +9,44 @@ function fillFilmList() {
         for(let i = 0; i<films.length; i++) {
             let tr = document.createElement('tr');
 
-            let tdTitle = document.createElement('td');
             let tdTitleRus = document.createElement('td');
+            let tdTitle = document.createElement('td');
             let tdYear = document.createElement('td');
-            let tdActions = document.createElement('td');
+            let tdAction = document.createElement('td');
 
-            tdTitle.innerText = films[i].title == films[i].title_ru ? '' : films[i].title;
             tdTitleRus.innerText = films[i].title_ru;
+            let originalTitle = document.createElement('span');
+            originalTitle.innerText = films[i].title === films[i].title_ru ? '' : films[i].title;
+            originalTitle.style.fontStyle = 'italic';
+            originalTitle.innerText = originalTitle.innerText ? ` (${originalTitle.innerText})` : '';
+            tdTitle.appendChild(originalTitle);
             tdYear.innerText = films[i].year;
 
             let editButton = document.createElement('button');
-            editButton.innerText = 'редактировать';
+            editButton.innerText = 'Редактировать';
+            editButton.style.border = '1px';
+            editButton.style.padding = '7px';
+            editButton.style.margin = '5px';
+            editButton.style.borderRadius = '7px';
+
             editButton.onclick = function() {
                 editFilm(i);
-            };
+            }
 
             let delButton = document.createElement('button');
-            delButton.innerText = 'удалить';
+            delButton.innerText = 'Удалить';
+
             delButton.onclick = function() {
                 deleteFilm(i, films[i].title_ru);
-            };
+            }
 
-            tdActions.append(editButton);
-            tdActions.append(delButton);
+            tdAction.append(editButton);
+            tdAction.append(delButton);
 
-            tr.append(tdTitle);
             tr.append(tdTitleRus);
+            tr.append(tdTitle);
             tr.append(tdYear);
-            tr.append(tdActions);
+            tr.append(tdAction);
 
             tbody.append(tr);
         }
