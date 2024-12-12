@@ -10,10 +10,10 @@ lab6 = Blueprint('lab6', __name__)
 def db_connect():
     if current_app.config['DB_TYPE'] == 'postgres':
         conn = psycopg2.connect(
-            host='127.0.0.1',
-            database='irina_kaluzhskaya_knowledge_base',
-            user='irina_kaluzhskaya_knowledge_base',
-            password='123'
+            host = '127.0.0.1',
+            database = 'irina_kaluzhskaya_knowledge_base',
+            user = 'irina_kaluzhskaya_knowledge_base',
+            password = '123'
         )
         cur = conn.cursor(cursor_factory=RealDictCursor)
     else:
