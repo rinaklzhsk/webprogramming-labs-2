@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 5{% endblock %}
+
+{% block main %}
+    <style>
+        .list {
+            display: inline-block;
+            width: 130px;
+            background-color: rgb(255, 255, 255);
+            text-align: center;
+            border-radius: 7px;
+            margin: 5px;
+            padding: 7px;
+        }
+    </style>
+
+    <h1 style="text-align: center;">База знаний</h1>
+        
+        <div style="text-align: center; background-color: #7b1fa2; border-radius: 7px;">
+            <div class="list"><a href="/lab8/login">Вход</a></div>
+            <div class="list"><a href="/lab8/register">Регистрация</a></div>
+            <div class="list"><a href="/lab8/articles">Список статей</a></div>
+            <div class="list"><a href="/lab8/create">Создать статью</a></div>
+            <div style="color: aliceblue;">Anonymous</div>
+        </div>
+        
+{% endblock %}
