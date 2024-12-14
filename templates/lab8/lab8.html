@@ -17,13 +17,18 @@
 
     <h1 style="text-align: center;">База знаний</h1>
         
-        <div style="text-align: center; background-color: #7b1fa2; border-radius: 7px;">
-            <div class="list"><a href="/lab8/login">Вход</a></div>
-            <div class="list"><a href="/lab8/register">Регистрация</a></div>
-            <div class="list"><a href="/lab8/articles">Список статей</a></div>
-            <div class="list"><a href="/lab8/create">Создать статью</a></div>
-            <div class="list"><a href="/lab8/logout">Выход</a></div>
+    <div style="text-align: center; background-color: #7b1fa2; border-radius: 7px;">
+        <div class="list"><a href="/lab8/login">Вход</a></div>
+        <div class="list"><a href="/lab8/register">Регистрация</a></div>
+        <div class="list"><a href="/lab8/articles">Список статей</a></div>
+        <div class="list"><a href="/lab8/create">Создать статью</a></div>
+        <div class="list"><a href="/lab8/logout">Выход</a></div>
+        
+        {% if current_user.is_authenticated %}
+            <div style="color: aliceblue;">{{ current_user.login }}</div>
+        {% else %}
             <div style="color: aliceblue;">Anonymous</div>
-        </div>
+        {% endif %}
+    </div>
         
 {% endblock %}

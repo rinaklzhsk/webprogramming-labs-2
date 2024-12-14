@@ -31,6 +31,12 @@ def register():
     new_user = users(login = login_form, password = password_hash)
     db.session.add(new_user)
     db.session.commit()
+    
+    remember = 'remember' in request.form
+    
+    # Автоматический логин после регистрации
+    login_user(new_user, remember=remember)
+
     return redirect('/lab8/')
 
     
@@ -42,11 +48,13 @@ def login():
     login_form = request.form.get('login')
     password_form = request.form.get('password')
 
+    remember = 'remember' in request.form
+
     user = users.query.filter_by(login = login_form).first()
 
     if user:
         if check_password_hash(user.password, password_form):
-            login_user(user, remember = False)
+            login_user(user, remember = remember)
             return redirect('/lab8/')
 
     return render_template('/lab8/login.html', 
@@ -66,4 +74,3 @@ def logout():
     return redirect('/lab8/')
 
 
-    
