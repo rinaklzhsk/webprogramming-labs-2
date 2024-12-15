@@ -3,6 +3,30 @@
 {% block lab %}Лабораторная работа 8{% endblock %}
 
 {% block main %}
+    <style>
+        /* Общий стиль для кнопок */
+        .article-actions button {
+                padding: 4px 10px;
+                margin-bottom: 5px;
+                color: #531d40;
+                font-size: 13px;
+                cursor: pointer;
+                border: none;
+                border-radius: 5px;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+        .article-actions button:hover {
+            background-color: #b53e8b; 
+        }
+
+        .article-actions button:focus {
+            outline: none;
+            box-shadow: 0 0 5px #d147a3; 
+        }
+    </style>
+
     <h1>Создание статьи</h1>
 
     <form method="post">
@@ -17,7 +41,7 @@
             <textarea name="article_text" required></textarea>
         </div>
 
-        <div>
+        <div class="article-actions">
             <button type="submit">Готово</button>
         </div>
     </form>

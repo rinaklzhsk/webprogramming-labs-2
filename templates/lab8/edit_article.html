@@ -1,13 +1,9 @@
 {% extends "base.html" %}
 
-{% block lab %}Лабораторная работа 8{% endblock %}
+{% block lab %}Редактирование статьи{% endblock %}
 
 {% block main %}
     <style>
-        .error {
-            color: red;
-        }
-
         /* Общий стиль для кнопок */
         .article-actions button {
                 padding: 4px 10px;
@@ -30,34 +26,26 @@
             box-shadow: 0 0 5px #d147a3; 
         }
     </style>
-    <h1>Вход в систему</h1>
+    
+    <h1>Редактирование статьи</h1>
 
-    <form action="/lab8/login" method="post">
+    <form method="post">
         <div>
-            <label>
-                Логин: <input type="text" name="login">
+            <label>Название статьи:
+                <input type="text" name="title" value="{{ article.title }}" maxlength="50">
             </label>
         </div>
 
         <div>
-            <label>
-                Пароль: <input type="password" name="password">
-            </label>
-        </div>
-
-        <div>
-            <label>
-                <input type="checkbox" name="remember">Запомнить меня
-            </label>
+            <textarea name="article_text">{{ article.article_text }}</textarea>
         </div>
 
         <div class="article-actions">
-            <button type="submit">Вход</button>
+            <button type="submit">Сохранить</button>
         </div>
-        
     </form>
 
     {% if error %}
-        <div class="error">{{ error }}</div>
+        <div>{{ error }}</div>
     {% endif %}
 {% endblock %}

@@ -135,7 +135,7 @@ def edit(article_id):
             article.article_text = article_text
             db.session.commit()
 
-            return redirect(url_for('lab8.article_list'))  # Перенаправляем на страницу со списком статей
+            return redirect('/lab8/articles/')  # Перенаправляем на страницу со списком статей
 
         # Если GET-запрос, показываем форму с текущими данными статьи
         return render_template('lab8/edit_article.html', article=article)
