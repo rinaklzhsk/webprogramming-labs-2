@@ -3,44 +3,27 @@
 {% block lab %}Лабораторная работа 8{% endblock %}
 
 {% block main %}
-    <h1>Список статей</h1>
+    <h1>Создание статьи</h1>
 
-    {% if articles %}
-        <ul>
-            {% for article in articles %}
-                <li>
-                    <h3>{{ article.title }}</h3>
+    <form method="post">
+        <div>
+            <label>
+                Название статьи:
+                <input type="text" maxlength="50" name="title" required>
+            </label>
+        </div>
 
-                    <!-- Текст статьи с прокруткой, если он длинный -->
-                    <blockquote class="article-text">
-                        {{ article.article_text }}
-                    </blockquote>
-                    
-                    <form action="{{ url_for('lab8.delete', article_id=article.id) }}" method="post">
-                        <button type="submit">Удалить</button>
-                    </form>
-                    
-                    <form action="{{ url_for('lab8.edit', article_id=article.id) }}" method="post">
-                        <button type="submit">Редактировать</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>У вас нет статей.</p>
+        <div>
+            <textarea name="article_text" required></textarea>
+        </div>
+
+        <div>
+            <button type="submit">Готово</button>
+        </div>
+    </form>
+
+    {% if error %}
+        <div>{{ error }}</div>
     {% endif %}
-{% endblock %}
-
-{% block script %}
-    <style>
-        /* Стиль для блока с полным текстом статьи */
-        .article-text {
-            max-height: 300px;  /* Ограничение высоты блока */
-            overflow-y: auto;   /* Вертикальная прокрутка */
-            padding: 10px;
-            background-color: #f0f0f0; /* Легкий фон */
-            border-radius: 5px;
-            border: 1px solid #ccc;  /* Граница блока */
-        }
-    </style>
+    
 {% endblock %}
