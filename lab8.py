@@ -33,7 +33,7 @@ def register():
     db.session.commit()
     
     remember = 'remember' in request.form
-    
+
     # Автоматический логин после регистрации
     login_user(new_user, remember=remember)
 
@@ -64,7 +64,10 @@ def login():
 @lab8.route('/lab8/articles/')
 @login_required
 def article_list():
-    return "Список статей"
+    # Извлекаем все статьи, которые принадлежат текущему пользователю
+    user_articles = articles.query.filter_by(login_id=current_user.id).all()
+    
+    return render_template('lab8/articles_list.html', articles=user_articles)
 
 
 @lab8.route('/lab8/logout/')
@@ -74,3 +77,68 @@ def logout():
     return redirect('/lab8/')
 
 
+@lab8.route('/lab8/create/', methods=['GET', 'POST'])
+@login_required
+def create():
+    if request.method == 'POST':
+        title = request.form.get('title')
+        article_text = request.form.get('article_text')
+
+        if not title or not article_text:
+            return render_template('lab8/create_article.html', error="Пожалуйста, заполните все поля")
+
+        new_article = articles(
+            title=title,
+            article_text=article_text,
+            login_id=current_user.id,
+            is_favorite=False,  
+            is_public=True,     
+            likes=0
+        )
+
+        db.session.add(new_article)
+        db.session.commit()
+
+        return redirect('/lab8/articles/')  # Перенаправляем на список статей
+
+    return render_template('lab8/create_article.html')
+    
+
+@lab8.route('/lab8/articles/delete/<int:article_id>/', methods=['POST'])
+@login_required
+def delete(article_id):
+    article = articles.query.get(article_id)
+    
+    if article and article.login_id == current_user.id:
+        db.session.delete(article)
+        db.session.commit()
+        return redirect('/lab8/articles/') 
+    else:
+        return "Статья не найдена или у вас нет прав на удаление этой статьи", 403
+
+
+@lab8.route('/lab8/articles/edit/<int:article_id>/', methods=['GET', 'POST'])
+@login_required
+def edit(article_id):
+    article = articles.query.get(article_id)
+
+    if article and article.login_id == current_user.id:
+        if request.method == 'POST':
+            title = request.form.get('title')
+            article_text = request.form.get('article_text')
+            
+            if not title or not article_text:
+                return render_template('lab8/edit_article.html', article=article, error='Заполните все поля')
+
+            # Обновляем данные статьи
+            article.title = title
+            article.article_text = article_text
+            db.session.commit()
+
+            return redirect(url_for('lab8.article_list'))  # Перенаправляем на страницу со списком статей
+
+        # Если GET-запрос, показываем форму с текущими данными статьи
+        return render_template('lab8/edit_article.html', article=article)
+    
+    else:
+        return "Статья не найдена или у вас нет прав на редактирование этой статьи", 403
