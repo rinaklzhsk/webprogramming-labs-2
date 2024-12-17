@@ -72,4 +72,3 @@ def congratulations(name, age, gender, preference, sub_preference):
         message = f"Поздравляю тебя, {name}, желаю, чтобы ты {pronoun}. Вот тебе подарок — {gift}."
 
     return render_template('lab9/congratulations.html', message=message, image=image)
-
