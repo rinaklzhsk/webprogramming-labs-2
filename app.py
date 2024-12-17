@@ -14,6 +14,7 @@ from lab5 import lab5
 from lab6 import lab6
 from lab7 import lab7
 from lab8 import lab8
+from lab9 import lab9
 from rgz import rgz
 
 app = Flask(__name__)
@@ -52,6 +53,7 @@ app.register_blueprint(lab5)
 app.register_blueprint(lab6)
 app.register_blueprint(lab7)
 app.register_blueprint(lab8)
+app.register_blueprint(lab9)
 app.register_blueprint(rgz)
 
 
@@ -131,6 +133,7 @@ def index():
                 <li><a href="''' + url_for('lab6.main') + '''">Шестая лабораторная</a></li>
                 <li><a href="''' + url_for('lab7.main') + '''">Седьмая лабораторная</a></li>
                 <li><a href="''' + url_for('lab8.lab') + '''">Восьмая лабораторная</a></li>
+                <li><a href="''' + url_for('lab9.lab') + '''">Девятая лабораторная</a></li>
                 <li><a href="''' + url_for('rgz.main') + '''">РГЗ</a></li>
             </ul>
             
