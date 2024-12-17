@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block lab %}Пол{% endblock %}
+
+{% block main %}
+    <h1>Введите ваш пол</h1>
+    <form action="{{ url_for('lab9.gender', name=name, age=age) }}" method="post">
+        <label for="gender">Пол:</label>
+        <select id="gender" name="gender" required>
+            <option value="male">Мужской</option>
+            <option value="female">Женский</option>
+        </select>
+        <button type="submit">Далее</button>
+    </form>
+{% endblock %}

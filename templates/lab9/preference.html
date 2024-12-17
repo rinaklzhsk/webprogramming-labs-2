@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block lab %}Что вам больше нравится?{% endblock %}
+
+{% block main %}
+    <h1>Что вам больше нравится?</h1>
+    <form action="{{ url_for('lab9.preference', name=name, age=age, gender=gender) }}" method="post">
+        <label for="preference">Выберите один вариант:</label>
+        <select id="preference" name="preference" required>
+            <option value="delicious">Что-то вкусное</option>
+            <option value="beautiful">Что-то красивое</option>
+        </select>
+        <button type="submit">Далее</button>
+    </form>
+{% endblock %}

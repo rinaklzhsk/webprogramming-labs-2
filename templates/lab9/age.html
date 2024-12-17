@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block lab %}Возраст{% endblock %}
+
+{% block main %}
+    <h1>Введите ваш возраст</h1>
+    <form action="{{ url_for('lab9.age', name=name) }}" method="post">
+        <label for="age">Ваш возраст:</label>
+        <input type="number" id="age" name="age" required>
+        <button type="submit">Далее</button>
+    </form>
+{% endblock %}
