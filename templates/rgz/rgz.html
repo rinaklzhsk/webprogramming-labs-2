@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block lab %}РГЗ. Кинотеатр{% endblock %}
+
+{% block main %}
+    <style>
+        .list {
+            display: inline-block;
+            width: 130px;
+            background-color: rgb(255, 255, 255);
+            text-align: center;
+            border-radius: 7px;
+            margin: 5px;
+            padding: 7px;
+        }
+    </style>
+
+    <h1 style="text-align: center;">База знаний</h1>
+        
+    <div style="text-align: center; background-color: #7b1fa2; border-radius: 7px;">
+        <div class="list"><a href="/rgz/login">Вход</a></div>
+        <div class="list"><a href="/rgz/register">Регистрация</a></div>
+        <div class="list"><a href="/rgz/articles">Афиша</a></div>
+        <div class="list"><a href="/rgz/logout">Выход</a></div>
+        
+        {% if current_user.is_authenticated %}
+            <div style="color: aliceblue;">{{ current_user.login }}</div>
+        {% else %}
+            <div style="color: aliceblue;">Anonymous</div>
+        {% endif %}
+    </div>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+{% endblock %}
