@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block lab %}Редактирование статьи{% endblock %}
+
+{% block main %}
+    <style>
+        /* Общий стиль для кнопок */
+        .article-actions button {
+                padding: 4px 10px;
+                margin-bottom: 5px;
+                color: #531d40;
+                font-size: 13px;
+                cursor: pointer;
+                border: none;
+                border-radius: 5px;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+        .article-actions button:hover {
+            background-color: #b53e8b; 
+        }
+
+        .article-actions button:focus {
+            outline: none;
+            box-shadow: 0 0 5px #d147a3; 
+        }
+    </style>
+    
+    <h1>Редактирование фильма</h1>
+
+    <form method="post">
+        <div>
+            <label>Название фильма:
+                <input type="text" name="title" value="{{ film.title }}" maxlength="50">
+            </label>
+        </div>
+
+        <div>
+            <label>Описание фильма:
+                <textarea name="film_text">{{ film.film_text }}</textarea>
+            </label>
+            </div>
+
+        <div class="article-actions">
+            <button type="submit">Сохранить</button>
+        </div>
+    </form>
+
+    {% if error %}
+        <div>{{ error }}</div>
+    {% endif %}
+{% endblock %}

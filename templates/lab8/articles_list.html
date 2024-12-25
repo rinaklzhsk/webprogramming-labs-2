@@ -50,12 +50,13 @@
                         {{ article.article_text }}
                     </div><br>
 
+
                     <div class="article-actions">
-                        <form action="{{ url_for('lab8.delete', article_id=article.id) }}" method="post">
+                        <form action="{{ url_for('rgz.delete', film_id=film.id) }}" method="post">
                             <button type="submit">Удалить</button>
                         </form>
 
-                        <form action="{{ url_for('lab8.edit', article_id=article.id) }}" method="post">
+                        <form action="{{ url_for('rgz8.edit', film_id=film.id) }}" method="post">
                             <button type="submit">Редактировать</button>
                         </form>
                     </div>

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block lab %}РГЗ{% endblock %}
+
+{% block main %}
+    <style>
+        .error {
+            color: red;
+        }
+
+        /* Общий стиль для кнопок */
+        .article-actions button {
+                padding: 4px 10px;
+                margin-bottom: 5px;
+                color: #531d40;
+                font-size: 13px;
+                cursor: pointer;
+                border: none;
+                border-radius: 5px;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+        .article-actions button:hover {
+            background-color: #b53e8b; 
+        }
+
+        .article-actions button:focus {
+            outline: none;
+            box-shadow: 0 0 5px #d147a3; 
+        }
+        .article-text {
+            display: none; /* Скрыть описание по умолчанию */
+            margin-top: 10px;
+        }
+
+        .show-more {
+            color: #d000ff; /* Синий цвет для текста */
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Подчеркивание при наведении */
+        .show-more:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <h1>Афиша</h1>
+
+    {% if films %}
+        <ul>
+            {% for film in films %}
+                <li>
+                    <h3>{{ film.title }}</h3>
+
+                    <div class="article-text" id="text-{{ film.id }}">
+                        {{ film.film_text }}
+                    </div>
+                    
+                    <span class="show-more" onclick="toggleText({{ film.id }})">Показать больше</span>
+                    {% if current_user.login == 'admin' %}
+                        <div class="article-actions">
+                            <form action="{{ url_for('rgz.delete', films_id=film.id) }}" method="post">
+                                <button type="submit">Удалить</button>
+                            </form>
+
+                            <form action="{{ url_for('rgz.edit', films_id=film.id) }}" method="post">
+                                <button type="submit">Редактировать</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </li>
+
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Нет доступных фильмов.</p>
+    {% endif %}
+
+    <script>
+        function toggleText(filmId) {
+            var textElement = document.getElementById('text-' + filmId);
+            var showMoreText = document.querySelector('span[onclick="toggleText(' + filmId + ')"]');
+            
+            if (textElement.style.display === "none" || textElement.style.display === "") {
+                textElement.style.display = "block";
+                showMoreText.textContent = "Скрыть";  // Меняем текст на "Скрыть"
+            } else {
+                textElement.style.display = "none";
+                showMoreText.textContent = "Показать больше";  // Меняем текст на "Показать больше"
+            }
+        }
+    </script>
+{% endblock %}
