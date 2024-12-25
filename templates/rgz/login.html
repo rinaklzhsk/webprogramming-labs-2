@@ -1,63 +1,19 @@
 {% extends "base.html" %}
 
-{% block lab %}Лабораторная работа 8{% endblock %}
+{% block lab %}Авторизация{% endblock %}
 
 {% block main %}
-    <style>
-        .error {
-            color: red;
-        }
-
-        /* Общий стиль для кнопок */
-        .article-actions button {
-                padding: 4px 10px;
-                margin-bottom: 5px;
-                color: #531d40;
-                font-size: 13px;
-                cursor: pointer;
-                border: none;
-                border-radius: 5px;
-                transition: all 0.3s ease;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-
-        .article-actions button:hover {
-            background-color: #b53e8b; 
-        }
-
-        .article-actions button:focus {
-            outline: none;
-            box-shadow: 0 0 5px #d147a3; 
-        }
-    </style>
-    <h1>Вход в систему</h1>
-
-    <form action="/rgz/login" method="post">
+    <h1>Авторизация</h1>
+    <form class="auth-form" method="POST" action="{{ url_for('rgz.login') }}">
         <div>
-            <label>
-                Логин: <input type="text" name="login">
-            </label>
+            <label for="login">Логин:</label>
+            <input type="text" id="login" name="login" required>
         </div>
-
         <div>
-            <label>
-                Пароль: <input type="password" name="password">
-            </label>
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required>
         </div>
-
-        <div>
-            <label>
-                <input type="checkbox" name="remember">Запомнить меня
-            </label>
-        </div>
-
-        <div class="article-actions">
-            <button type="submit">Вход</button>
-        </div>
-        
+        <button type="submit">Войти</button>
+        <p>Нет аккаунта? <a href="{{ url_for('rgz.register') }}">Зарегистрируйтесь</a></p>
     </form>
-
-    {% if error %}
-        <div class="error">{{ error }}</div>
-    {% endif %}
 {% endblock %}

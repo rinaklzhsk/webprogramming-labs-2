@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block lab %}Главная страница{% endblock %}
+
+{% block main %}
+    <h1>Список сеансов</h1>
+    <ul>
+        {% for movie in movies %}
+            <li>
+                <h2>{{ movie.title }}</h2>
+                <p>Дата: {{ movie.date }}</p>
+                <p>Время: {{ movie.time }}</p>
+                <a href="{{ url_for('rgz.movie', movie_id=movie.id) }}">Подробнее</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% if 'user_id' in session %}
+        <p>Вы вошли как: {{ session['full_name'] }}</p>
+        <a href="{{ url_for('rgz.logout') }}">Выйти</a>
+    {% else %}
+        <p><a href="{{ url_for('rgz.login') }}">Войдите</a>, чтобы бронировать места.</p>
+    {% endif %}
+{% endblock %}

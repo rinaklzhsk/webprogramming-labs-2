@@ -134,7 +134,7 @@ def index():
                 <li><a href="''' + url_for('lab7.main') + '''">Седьмая лабораторная</a></li>
                 <li><a href="''' + url_for('lab8.lab') + '''">Восьмая лабораторная</a></li>
                 <li><a href="''' + url_for('lab9.lab') + '''">Девятая лабораторная</a></li>
-                <li><a href="''' + url_for('rgz.main') + '''">РГЗ</a></li>
+                <li><a href ="/rgz">РГЗ</a></li>
             </ul>
             
             <footer style = "bottom: 0; position: fixed">

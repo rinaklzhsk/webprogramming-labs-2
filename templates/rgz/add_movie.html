@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block lab %}Добавить сеанс{% endblock %}
+
+{% block main %}
+    <h1>Добавить новый сеанс</h1>
+    <form method="POST" action="{{ url_for('rgz.admin_add_movie') }}">
+        <div>
+            <label for="title">Название фильма:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div>
+            <label for="date">Дата:</label>
+            <input type="date" id="date" name="date" required>
+        </div>
+        <div>
+            <label for="time">Время:</label>
+            <input type="time" id="time" name="time" required>
+        </div>
+        <button type="submit">Добавить сеанс</button>
+    </form>
+{% endblock %}

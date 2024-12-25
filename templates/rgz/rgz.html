@@ -1,39 +1,18 @@
 {% extends "base.html" %}
-
-{% block lab %}РГЗ. Кинотеатр{% endblock %}
-
+{% block lab %}Главное меню{% endblock %}
 {% block main %}
-    <style>
-        .list {
-            display: inline-block;
-            width: 130px;
-            background-color: rgb(255, 255, 255);
-            text-align: center;
-            border-radius: 7px;
-            margin: 5px;
-            padding: 7px;
-        }
-    </style>
-
-    <h1 style="text-align: center;">Кинотеатр</h1>
-        
-    <div style="text-align: center; background-color: #7b1fa2; border-radius: 7px;">
-        <div class="list"><a href="/rgz/login">Вход</a></div>
-        <div class="list"><a href="/rgz/register">Регистрация</a></div>
-        <div class="list"><a href="/rgz/afisha">Афиша</a></div>
-        <div class="list"><a href="/rgz/logout">Выход</a></div>
-        {% if current_user.login == 'admin' %}
-            <div class="list"><a href="/rgz/create">Добавить сеанс</a></div>
-        {% endif %}
-
-        {% if current_user.is_authenticated %}
-            <div style="color: aliceblue;">Добро пожаловать, {{ current_user.login }}!</div>
+    <h1>Добро пожаловать в кинотеатр!</h1>
+    <p>Выберите действие:</p>
+    <ul class="list-container">
+        {% if 'user_id' in session %}
+            <li><a href="{{ url_for('rgz.index') }}">Список сеансов</a></li>
+            <li><a href="{{ url_for('rgz.logout') }}">Выйти</a></li>
+            {% if session.get('is_admin') %}
+                <li><a href="{{ url_for('rgz.admin_add_movie') }}">Добавить сеанс</a></li>
+            {% endif %}
         {% else %}
-            <div style="color: aliceblue;">Anonymous</div>
+            <li><a href="{{ url_for('rgz.register') }}">Регистрация</a></li>
+            <li><a href="{{ url_for('rgz.login') }}">Авторизация</a></li>
         {% endif %}
-    </div>
-
-    {% if error %}
-        <div class="error">{{ error }}</div>
-    {% endif %}
+    </ul>
 {% endblock %}
