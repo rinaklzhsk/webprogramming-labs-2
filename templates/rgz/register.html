@@ -3,13 +3,11 @@
 {% block lab %}Регистрация{% endblock %}
 
 {% block main %}
-{% block script %}
-    <script src="{{ url_for('static', filename='rgz/script.js') }}"></script>
-{% endblock %}
+
     <h1>Регистрация</h1>
     <form method="POST" action="{{ url_for('rgz.register') }}">
         <div>
-            <label for="full_name">ФИО:</label>
+            <label for="full_name">Имя:</label>
             <input type="text" id="full_name" name="full_name" required>
         </div>
         <div>
@@ -22,5 +20,9 @@
         </div>
         <button type="submit">Зарегистрироваться</button>
     </form>
-    <p>Уже есть аккаунт? <a href="{{ url_for('rgz.login') }}">Войдите</a></p>
+    <p>Уже есть аккаунт? <a href="{{ url_for('rgz.login') }}">Войти</a></p>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ url_for('static', filename='rgz/script.js') }}"></script>
 {% endblock %}

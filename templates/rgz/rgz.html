@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 {% block lab %}Главное меню{% endblock %}
 {% block main %}
-    <h1>Добро пожаловать в кинотеатр!</h1>
-    <p>Выберите действие:</p>
+    <h1>Кинотеатр</h1>
     <ul class="list-container">
         {% if 'user_id' in session %}
             <li><a href="{{ url_for('rgz.index') }}">Список сеансов</a></li>

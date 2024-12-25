@@ -8,15 +8,15 @@ import sqlite3
 
 
 app = Flask(__name__)
-app.secret_key = 'secret' 
+app.secret_key = 'secret'  # Установите секретный ключ для сессий
 
 rgz = Blueprint('rgz', __name__)
 
 # Конфигурация базы данных
 app.config['DB_TYPE'] = 'postgres' 
 app.config['POSTGRES_HOST'] = '127.0.0.1'
-app.config['POSTGRES_DB'] = 'irina_kaluzhskaya_rgz'
-app.config['POSTGRES_USER'] = 'irina_kaluzhskaya_rgz'
+app.config['POSTGRES_DB'] = 'rgz'
+app.config['POSTGRES_USER'] = 'rgz'
 app.config['POSTGRES_PASSWORD'] = '123'
 
 def db_connect():
