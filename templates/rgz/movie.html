@@ -13,7 +13,7 @@
             <div class="seat">
                 {% set booked = bookings | selectattr('seat_number', 'equalto', seat) | list %}
                 {% if booked %}
-                    <button disabled class="booked">Место {{ seat }} занято: {{ booked[0].full_name }}</button>
+                    <button disabled class="booked">Место {{ seat }} занято: {{ full_name }}</button>
                     {% if booked[0].user_id == session['user_id'] %}
                         <form method="POST" action="{{ url_for('rgz.unbook', movie_id=movie.id, seat_number=seat) }}" style="display: inline;">
                             <button type="submit" class="unbook">Отменить бронь</button>
@@ -33,6 +33,7 @@
         {% endfor %}
         <button type="submit" id="confirm-booking">Подтвердить бронирование</button>
     </form>
+
     {% if 'user_id' in session %}
         <p>Вы вошли как: {{ session['full_name'] }}</p>
         <a href="{{ url_for('rgz.logout') }}">Выйти</a>
@@ -101,5 +102,87 @@
             margin-top: 5px;
         }
     </style>
-    <script src="{{ url_for('static', filename='rgz/booking.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const seatsContainer = document.querySelector('.seats');
+            const bookingForm = document.getElementById('booking-form');
+            const confirmButton = document.getElementById('confirm-booking');
+            const selectedSeats = new Set(); // Хранит выбранные места
+
+            if (seatsContainer && bookingForm) {
+                seatsContainer.addEventListener('click', function (event) {
+                    console.log('Клик по контейнеру мест');
+                    const seatButton = event.target.closest('button');
+                    if (!seatButton) {
+                        console.log('Кнопка не найдена');
+                        return;
+                    }
+                    if (seatButton.disabled) {
+                        console.log('Кнопка отключена'); 
+                        return;
+                    }
+
+                    const seatNumber = seatButton.dataset.seat; 
+                    const seatCheckbox = bookingForm.querySelector(`input[value="${seatNumber}"]`);
+
+                    if (selectedSeats.has(seatNumber)) {
+                        // Если место уже выбрано, снимаем выбор
+                        selectedSeats.delete(seatNumber);
+                        seatButton.classList.remove('selected');
+                        seatCheckbox.checked = false;
+                    } else {
+                        // Если место не выбрано, добавляем его
+                        if (selectedSeats.size >= 5) {
+                            alert('Вы можете выбрать не более 5 мест.');
+                            return;
+                        }
+                        selectedSeats.add(seatNumber);
+                        seatButton.classList.add('selected');
+                        seatCheckbox.checked = true;
+                    }
+
+                    // Активируем или деактивируем кнопку подтверждения
+                    if (confirmButton) {
+                        confirmButton.disabled = selectedSeats.size === 0;
+                    }
+
+                    console.log('Выбранные места:', Array.from(selectedSeats));
+                });
+
+                // Обработка отправки формы
+                bookingForm.addEventListener('submit', function (event) {
+                    if (selectedSeats.size === 0) {
+                        event.preventDefault();
+                        alert('Выберите хотя бы одно место.');
+                    }
+                });
+            }
+        });
+    </script>
+    
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class="flash-messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+<style>
+.flash-messages {
+    list-style-type: none;
+    padding: 0;
+}
+.flash-messages li {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+}
+</style>
+
 {% endblock %}

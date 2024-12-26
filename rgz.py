@@ -21,7 +21,6 @@ app.config['POSTGRES_PASSWORD'] = '123'
 
 def db_connect():
     if app.config['DB_TYPE'] == 'postgres':
-        # Подключение к PostgreSQL
         conn = psycopg2.connect(
             host=app.config['POSTGRES_HOST'],
             database=app.config['POSTGRES_DB'],
@@ -30,7 +29,6 @@ def db_connect():
         )
         cur = conn.cursor(cursor_factory=RealDictCursor)
     else:
-        # Подключение к SQLite
         dir_path = path.dirname(path.realpath(__file__))
         db_path = path.join(dir_path, "database.db")
         conn = sqlite3.connect(db_path)
@@ -38,6 +36,13 @@ def db_connect():
         cur = conn.cursor()
 
     return conn, cur
+
+
+def db_close(conn, cur):
+    conn.commit()
+    cur.close()
+    conn.close()
+
 
 @rgz.route('/rgz/register', methods=['GET', 'POST'])
 def register():
@@ -57,8 +62,7 @@ def register():
         except psycopg2.IntegrityError:
             flash('Логин уже занят. Попробуйте другой.', 'error')
         finally:
-            cur.close()
-            conn.close()
+            db_close(conn, cur)
 
     return render_template('rgz/register.html')
 
@@ -70,15 +74,13 @@ def login():
 
         conn, cur = db_connect()
         try:
-            # Ищем пользователя в базе данных по логину
             cur.execute('SELECT * FROM users WHERE login = %s', (login,))
             user = cur.fetchone()
 
             if user and check_password_hash(user['password_hash'], password):
-                # Устанавливаем данные пользователя в сессию
                 session['user_id'] = user['id']
                 session['full_name'] = user['full_name']
-                session['is_admin'] = user.get('is_admin', False)  # Проверяем, является ли пользователь администратором
+                session['is_admin'] = user.get('is_admin', False)
 
                 if session['is_admin']:
                     flash('Вы успешно вошли в систему как администратор!', 'success')
@@ -89,8 +91,7 @@ def login():
             else:
                 flash('Неверный логин или пароль.', 'error')
         finally:
-            cur.close()
-            conn.close()
+            db_close(conn, cur)
 
     return render_template('rgz/login.html')
 
@@ -102,7 +103,6 @@ def logout():
 
 @rgz.route('/rgz')
 def main_menu():
-    # Проверка, является ли пользователь администратором
     is_admin = session.get('is_admin', False)
     return render_template('rgz/rgz.html', is_admin=is_admin)
 
@@ -113,8 +113,7 @@ def index():
         cur.execute('SELECT * FROM movies ORDER BY date, time')
         movies = cur.fetchall()
     finally:
-        cur.close()
-        conn.close()
+        db_close(conn, cur)
     return render_template('rgz/index.html', movies=movies)
 
 @rgz.route('/rgz/book/<int:movie_id>', methods=['POST'])
@@ -123,7 +122,7 @@ def book(movie_id):
         flash('Сначала войдите в систему.', 'error')
         return redirect(url_for('rgz.login'))
 
-    selected_seats = request.form.getlist('seats')  # Получаем список выбранных мест
+    selected_seats = request.form.getlist('seats')
     if not selected_seats:
         flash('Выберите хотя бы одно место.', 'error')
         return redirect(url_for('rgz.movie', movie_id=movie_id))
@@ -145,8 +144,7 @@ def book(movie_id):
     except psycopg2.IntegrityError:
         flash('Ошибка при бронировании мест.', 'error')
     finally:
-        cur.close()
-        conn.close()
+        db_close(conn, cur)
 
     return redirect(url_for('rgz.movie', movie_id=movie_id))
 
@@ -171,8 +169,7 @@ def unbook(movie_id, seat_number):
         conn.commit()
         flash('Бронь успешно отменена.', 'success')
     finally:
-        cur.close()
-        conn.close()
+        db_close(conn, cur)
 
     return redirect(url_for('rgz.movie', movie_id=movie_id))
 
@@ -195,8 +192,7 @@ def admin_add_movie():
             flash('Сеанс успешно добавлен.', 'success')
             return redirect(url_for('rgz.index'))
         finally:
-            cur.close()
-            conn.close()
+            db_close(conn, cur)
 
     return render_template('rgz/add_movie.html')
 
@@ -217,12 +213,11 @@ def movie(movie_id):
             return redirect(url_for('rgz.index'))
 
     finally:
-        cur.close()
-        conn.close()
+        db_close(conn, cur)
 
     return render_template('rgz/movie.html', movie=movie, bookings=bookings)
 
-@rgz.route('/rgz/admin/delete_movie/<int:movie_id>', methods=['POST'])
+@rgz.route('/rgz/admin/delete_movie/<int:movie_id>', methods=['POST', 'GET'])
 def delete_movie(movie_id):
     conn, cur = db_connect()
     try:
@@ -230,7 +225,51 @@ def delete_movie(movie_id):
         conn.commit()
         flash('Сеанс успешно удален.', 'success')
     finally:
-        cur.close()
-        conn.close()
+        db_close(conn, cur)
 
     return redirect(url_for('rgz.index'))
+
+
+from datetime import datetime
+
+@rgz.route('/rgz/admin/edit_movie/<int:movie_id>', methods=['GET', 'POST'])
+def admin_edit_movie(movie_id):
+    if 'is_admin' not in session or not session['is_admin']:
+        flash('Доступ запрещен. Требуются права администратора.', 'error')
+        return redirect(url_for('rgz.index'))
+
+    conn, cur = db_connect()
+    try:
+        cur.execute('SELECT * FROM movies WHERE id = %s', (movie_id,))
+        movie = cur.fetchone()
+
+        if not movie:
+            flash('Фильм не найден.', 'error')
+            return redirect(url_for('rgz.index'))
+
+        # Проверяем, прошел ли сеанс
+        movie_datetime = datetime.combine(movie['date'], movie['time'])
+        current_datetime = datetime.now()
+
+        if movie_datetime < current_datetime:
+            flash('Невозможно редактировать фильм, так как сеанс уже прошел.', 'error')
+            return redirect(url_for('rgz.index'))
+
+        if request.method == 'POST':
+            title = request.form['title']
+            date = request.form['date']
+            time = request.form['time']
+
+            # Обновляем данные фильма
+            cur.execute('UPDATE movies SET title = %s, date = %s, time = %s WHERE id = %s',
+                        (title, date, time, movie_id))
+            conn.commit()
+
+            flash('Фильм успешно обновлен.', 'success')
+            return redirect(url_for('rgz.index'))
+
+        return render_template('rgz/edit_movie.html', movie=movie)
+
+    finally:
+        db_close(conn, cur)
+

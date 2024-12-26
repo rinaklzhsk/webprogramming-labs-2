@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block lab %}Редактировать фильм: {{ movie.title }}{% endblock %}
+
+{% block main %}
+<h2>Редактировать фильм</h2>
+
+<form method="POST">
+    <div>
+        <label for="title">Название:</label>
+        <input type="text" id="title" name="title" value="{{ movie.title }}" required>
+    </div>
+    <div>
+        <label for="date">Дата:</label>
+        <input type="date" id="date" name="date" value="{{ movie.date }}" required>
+    </div>
+    <div>
+        <label for="time">Время:</label>
+        <input type="time" id="time" name="time" value="{{ movie.time }}" required>
+    </div>
+    <button type="submit">Сохранить изменения</button>
+</form>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class="flash-messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+<style>
+    .flash-messages {
+        list-style-type: none;
+        padding: 0;
+    }
+    .flash-messages li {
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+    }
+</style>
+
+
+{% endblock %}
+
+
